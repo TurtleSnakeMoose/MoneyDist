@@ -1,0 +1,22 @@
+body{
+	background: #70ffc5;
+}
+
+#panel_payers{
+	background: #34fe99;
+}
+
+#panel_result{
+	display: none;
+}
+
+#div_header{
+	background-color: #59d8a2;
+	margin-bottom: 0;
+	padding: 1rem 2rem;
+}
+
+.panel{
+	background: #34fe99;
+	padding: 15px;
+}
