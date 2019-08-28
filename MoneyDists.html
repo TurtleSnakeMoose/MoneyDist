@@ -20,16 +20,12 @@
 				background: #70ffc5;
 			}
 
-			/* .row{
-
-			} */
-
 			#panel_payers{
 				background: #34fe99;
 			}
 
 			#panel_result{
-				background: #34fe99;
+				display: none;
 			}
 			
 			#div_header{
@@ -39,6 +35,7 @@
 			}
 			
 			.panel{
+				background: #34fe99;
 				padding: 15px;
 			}
 
@@ -62,10 +59,10 @@
 		<div class="container" id="mainContainer">
 			<div class="row">
 
-				<div class="col-sm-6 panel" id="panel_payers">
+				<div class="col-sm-12 panel" id="panel_payers">
 				</div>
 
-				<div class="col-sm-6 panel" id="panel_result">
+				<div class="col-sm-12 panel" id="panel_result">
 				</div>
 
 			</div>
@@ -95,9 +92,9 @@
 								<input class="form-control attendantName" type="text" placeholder="Attendant#${i+1}" id="attndName${i+1}" data-attendantNum="${i+1}">
 							</div>
 
-							<label class="col-2 col-form-label">Paid </label>
+							<label class="col-1 col-form-label">Paid </label>
 
-							<div style="padding: 0 1vw">
+							<div class="col-1" style="padding: 0 1vw">
 								<input class="form-control attendantPaid" type="number" placeholder="0" id="attndPayment_${i+1}" style="width:5vw; data-attendantNum="${i+1}"">
 							</div>
 
@@ -119,35 +116,60 @@
 
 				// calculate the funds transaction
 				function calcPayments (){
-					var payersDiv = $('#panel_payers'),
+					var payersPanel = $('#panel_payers'),
 						attndCount = parseInt($('#input_attendNum').val()),
 						attndData = [],
 						sum = 0;
 						precalculatedEachShare = 0;
 
-						payersDiv.find('.attendantRow').each(function (i, el){
+						payersPanel.find('.attendantRow').each(function (i, el){
 							var attendant = $(el),
 								atndName = attendant.find('.attendantName').val(),
-								atndPaid = parseInt(attendant.find('.attendantPaid').val());
-							
+								atndPaid = parseInt(attendant.find('.attendantPaid').val() === '' ? 0 : attendant.find('.attendantPaid').val());
 							sum += atndPaid;
 							attndData.push({Name: atndName, Paid: atndPaid});
 						});
 
 						precalculatedEachShare = sum / attndCount;
-
-						displayCalculation(attndCount, sum, precalculatedEachShare, attndData);
+						var resultContent = buildResultContent(attndCount, sum, precalculatedEachShare, attndData)
+						displayCalculation(resultContent);
 				}
-
-				function displayCalculation(attndCount, sum, precalculatedEachShare, attndData){
-					var payersDiv = $('#panel_result');
-
-					payersDiv.append(`
-						<span>Combined sum of ${sum} was collected by all ${attndCount} attendants.</span><br>
-						<span>Split evenly between all attendies BEFORE calculated distribution is ${precalculatedEachShare}.</span>
-					`);
-
+				
+				// build the result string based on input data
+				function buildResultContent(attndCount, sum, precalculatedEachShare, attndData){
 					console.table(attndData);
+
+					var resultPanel = $('#panel_result'),
+					    payersPanel = $('#panel_payers');
+					
+					//CONTINUE HERE
+					debugger;
+
+					var resultContent = `
+						<span>Combined sum of <strong>${sum}</strong> was collected by all <strong>${attndCount} attendants</strong>.</span><br>
+						<span>Split evenly between all attendies BEFORE calculated distribution is <strong>${precalculatedEachShare}</strong>.</span>
+					`;
+
+					return resultContent;
+
+				}
+				
+				// switch between panels to display the html content
+				function displayCalculation(content){
+
+					var resultPanel = $('#panel_result'),
+					    payersPanel = $('#panel_payers'),
+						buttonContent = `<div style="text-align: center;"><button class="btn btn-primary btn_back">Back</button></div>`;
+
+					resultPanel.show().empty();
+					payersPanel.hide();
+
+					resultPanel.append(content + buttonContent);
+
+					$('.btn_back').on('click', function(){
+						resultPanel.hide();
+						payersPanel.show();
+					})
 				}
 
 			})
