@@ -1,0 +1,156 @@
+<!doctype html>
+
+<html lang="en">
+	<head>
+	  <meta charset="utf-8">
+
+	  <title>Calculate Money Dist</title>
+	  <meta name="description" content="Calculate money distribution between parties">
+	  <meta name="author" content="Michael Roskin">
+	  
+	  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+	  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+	  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+
+	</head>
+
+	<body>
+		<style>
+			body{
+				background: #70ffc5;
+			}
+
+			/* .row{
+
+			} */
+
+			#panel_payers{
+				background: #34fe99;
+			}
+
+			#panel_result{
+				background: #34fe99;
+			}
+			
+			#div_header{
+				background-color: #59d8a2;
+				margin-bottom: 0;
+				padding: 1rem 2rem;
+			}
+			
+			.panel{
+				padding: 15px;
+			}
+
+		</style>
+	
+		<div class="jumbotron text-center" id="div_header">
+			<h1>Money Distribution Calculator</h1>
+
+			<p> Based on attending parties and their financial contribution, Calculate money distribution between parties.</p>
+
+			<div class="row" style="justify-content: center;">
+				<label for="input_attendNum" class="col-form-label">Number of attendants</label>
+				<div style="padding: 0 1vw">
+					<input class="form-control" type="number" value="2" max="25" min="2" id="input_attendNum" style="width:4vw; text-align: center;">
+				</div>
+				<button class="btn btn-primary btn_start" >Start</button>
+			</div>
+
+		</div>	
+
+		<div class="container" id="mainContainer">
+			<div class="row">
+
+				<div class="col-sm-6 panel" id="panel_payers">
+				</div>
+
+				<div class="col-sm-6 panel" id="panel_result">
+				</div>
+
+			</div>
+		</div>
+		
+		<script>
+			$(function (){
+				
+				// start button : correct number if num > 25 OR num < 2. display attendant names and payment inputs.
+				$('.btn_start').on('click', function(e) {
+					var numOfAttendants =  parseInt($('#input_attendNum').val());
+					appendAttendantInfo(numOfAttendants < 2 ? 2 : numOfAttendants > 25 ? 25 : numOfAttendants)
+				});
+
+				// append attendant names and payment inputs to form 
+				function appendAttendantInfo(numOfAttendants){
+					var payersDiv = $('#panel_payers');
+					$(payersDiv).empty();
+
+					for(i = 0 ; i < numOfAttendants ; i++){
+						payersDiv.append(`
+						<div class="form-group row attendantRow">
+							
+							<label class="col-1 col-form-label">${i+1}. </label>
+
+							<div class="col-5">
+								<input class="form-control attendantName" type="text" placeholder="Attendant#${i+1}" id="attndName${i+1}" data-attendantNum="${i+1}">
+							</div>
+
+							<label class="col-2 col-form-label">Paid </label>
+
+							<div style="padding: 0 1vw">
+								<input class="form-control attendantPaid" type="number" placeholder="0" id="attndPayment_${i+1}" style="width:5vw; data-attendantNum="${i+1}"">
+							</div>
+
+						</div>	
+						`);	
+					}
+
+					$(payersDiv).append(`
+						<div style="text-align: center;">
+							<button class="btn btn-primary btn_calculate">Calculate</button>
+						</div>
+					`);
+
+					// calculate button: calculate for every memeber of the party, how much money he should transfer to who
+					$('.btn_calculate').on('click', function(e) {
+						calcPayments();
+					});
+				}
+
+				// calculate the funds transaction
+				function calcPayments (){
+					var payersDiv = $('#panel_payers'),
+						attndCount = parseInt($('#input_attendNum').val()),
+						attndData = [],
+						sum = 0;
+						precalculatedEachShare = 0;
+
+						payersDiv.find('.attendantRow').each(function (i, el){
+							var attendant = $(el),
+								atndName = attendant.find('.attendantName').val(),
+								atndPaid = parseInt(attendant.find('.attendantPaid').val());
+							
+							sum += atndPaid;
+							attndData.push({Name: atndName, Paid: atndPaid});
+						});
+
+						precalculatedEachShare = sum / attndCount;
+
+						displayCalculation(attndCount, sum, precalculatedEachShare, attndData);
+				}
+
+				function displayCalculation(attndCount, sum, precalculatedEachShare, attndData){
+					var payersDiv = $('#panel_result');
+
+					payersDiv.append(`
+						<span>Combined sum of ${sum} was collected by all ${attndCount} attendants.</span><br>
+						<span>Split evenly between all attendies BEFORE calculated distribution is ${precalculatedEachShare}.</span>
+					`);
+
+					console.table(attndData);
+				}
+
+			})
+		</script>
+	</body>
+</html>
