@@ -72,7 +72,6 @@ $(function (){
 			payersPanel = $('#panel_payers');
 		
 		//CONTINUE HERE
-		var attendantBalance = $(attndData).clone(true);
 		debugger;
 
 		var resultContent = `
