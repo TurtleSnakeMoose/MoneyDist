@@ -67,19 +67,56 @@ $(function (){
 	// build the result string based on input data
 	function buildResultContent(attndCount, sum, precalculatedEachShare, attndData){
 		console.table(attndData);
+		var attendantsInDebt = [],
+			attendantsOverPaid = [],
+			transactions = [];
 
-		var resultPanel = $('#panel_result'),
-			payersPanel = $('#panel_payers');
+		//CONTINUE HERE =================================================================================================================================================
+		$(attndData).each(function(i ,atnd){
+			var atndBalance = precalculatedEachShare - atnd.Paid;
+			if(atndBalance >= 0){
+				attendantsInDebt.push({Name: atnd.Name, DebtBalance: atndBalance });
+			}
+			else {
+				attendantsOverPaid.push({Name: atnd.Name, OverPaidBalance: Math.abs(atndBalance)});
+			}
+		});
+
+		transactions = generateTransactions(attendantsInDebt, attendantsOverPaid);
 		
-		//CONTINUE HERE
-		debugger;
-
 		var resultContent = `
 			<span>Combined sum of <strong>${sum}</strong> was collected by all <strong>${attndCount} attendants</strong>.</span><br>
 			<span>Split evenly between all attendies BEFORE calculated distribution is <strong>${precalculatedEachShare}</strong>.</span>
 		`;
 
 		return resultContent;
+
+	}
+
+	function generateTransactions(attendantsInDebt, attendantsOverPaid){
+		attendantsInDebt.sort(function(a,b) { return a.DebtBalance - b.DebtBalance; }); //sort inDebt ascending
+		attendantsOverPaid.sort(function(a,b) { return b.OverPaidBalance - a.OverPaidBalance; }); //sort overPaid descending
+		var transactions = [];
+		
+		debugger;
+		$(attendantsOverPaid).each(function (opIndex, opAtnd){
+			$(attendantsInDebt).each(function (dIndex, debtAtnd){
+				if(debtAtnd.DebtBalance == 0)
+					return;
+				
+				var curOpAtndBalance = opAtnd.OverPaidBalance;
+				var curDebtAtndBalance = debtAtnd.DebtBalance;
+
+				debugger;
+				if(curOpAtndBalance - curDebtAtndBalance >= 0){
+					transactions.push({From: debtAtnd.Name, To: opAtnd.Name, Total: curDebtAtndBalance});
+					opAtnd.OverPaidBalance -= debtAtnd.DebtBalance;
+					debtAtnd.DebtBalance = 0;
+				}
+				
+			});
+		});
+
 
 	}
 	
