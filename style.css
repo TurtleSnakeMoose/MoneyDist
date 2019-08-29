@@ -8,6 +8,7 @@ body{
 
 #panel_result{
 	display: none;
+	text-align: center;
 }
 
 #div_header{
@@ -20,3 +21,9 @@ body{
 	background: #34fe99;
 	padding: 15px;
 }
+
+#versionInfo{
+	font-size: 10px;
+	float:left;
+}
+

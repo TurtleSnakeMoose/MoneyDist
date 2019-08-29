@@ -1,5 +1,26 @@
 $(function (){
 	
+	// TESTING ONLY - REMOVE WHEN WORKING
+	$('.btn_test').on('click', function(e) {
+		var hardCodedData = [
+			{Name: 'Jinji', Paid:593},
+			{Name: 'Mini', Paid:345},
+			{Name: 'Igor', Paid:400},
+			{Name: 'Yan', Paid:0},
+			{Name: 'Slava', Paid:123},
+			{Name: 'Eli', Paid:50},
+			{Name: 'Vova', Paid:50},
+			{Name: 'Bomj', Paid:0}
+			],
+			atndRows = $('.attendantRow');
+
+		for(i = 0 ; i < atndRows.length ; i++){
+			$(atndRows[i]).find('.attendantName').val(hardCodedData[i].Name);
+			$(atndRows[i]).find('.attendantPaid').val(hardCodedData[i].Paid);
+		}
+	});
+
+	
 	// start button : correct number if num > 25 OR num < 2. display attendant names and payment inputs.
 	$('.btn_start').on('click', function(e) {
 		var numOfAttendants =  parseInt($('#input_attendNum').val());
@@ -60,18 +81,29 @@ $(function (){
 			});
 
 			precalculatedEachShare = sum / attndCount;
-			var resultContent = buildResultContent(attndCount, sum, precalculatedEachShare, attndData)
-			displayCalculation(resultContent);
+
+			var summaryContent = buildSummaryContent(attndCount, sum, precalculatedEachShare);
+			var tableContent = buildTableContent(precalculatedEachShare, attndData);
+
+			showResult(summaryContent, tableContent);
 	}
 	
 	// build the result string based on input data
-	function buildResultContent(attndCount, sum, precalculatedEachShare, attndData){
-		console.table(attndData);
-		var attendantsInDebt = [],
-			attendantsOverPaid = [],
-			transactions = [];
+	function buildSummaryContent(attndCount, sum, precalculatedEachShare){
+		var summarySection = `
+			<div id="div_summaryInfo">
+				<span>Combined sum of <strong>${sum}</strong> was collected by all <strong>${attndCount} attendants</strong>.</span><br>
+				<span>Split evenly between all attendies BEFORE calculated distribution is <strong>${precalculatedEachShare}</strong>.</span>
+			</div>
+		`;
+		return summarySection;
+	}
 
-		//CONTINUE HERE =================================================================================================================================================
+	// build the result string based on input data
+	function buildTableContent(precalculatedEachShare, attndData){
+		var attendantsInDebt = [],
+			attendantsOverPaid = [];
+			
 		$(attndData).each(function(i ,atnd){
 			var atndBalance = precalculatedEachShare - atnd.Paid;
 			if(atndBalance >= 0){
@@ -81,56 +113,67 @@ $(function (){
 				attendantsOverPaid.push({Name: atnd.Name, OverPaidBalance: Math.abs(atndBalance)});
 			}
 		});
+		var transactions = generateTransactions(attendantsInDebt, attendantsOverPaid);
 
-		transactions = generateTransactions(attendantsInDebt, attendantsOverPaid);
+		var transactionSection = '';
+		$(transactions).each(function(i, trns){
+			transactionSection += `<tr><td>${trns.From}</td><td>${trns.To}</td><td>${trns.Total}</td></tr>`;
+		});
+
+		return transactionSection;
 		
-		var resultContent = `
-			<span>Combined sum of <strong>${sum}</strong> was collected by all <strong>${attndCount} attendants</strong>.</span><br>
-			<span>Split evenly between all attendies BEFORE calculated distribution is <strong>${precalculatedEachShare}</strong>.</span>
-		`;
-
-		return resultContent;
-
 	}
 
 	function generateTransactions(attendantsInDebt, attendantsOverPaid){
+
 		attendantsInDebt.sort(function(a,b) { return a.DebtBalance - b.DebtBalance; }); //sort inDebt ascending
 		attendantsOverPaid.sort(function(a,b) { return b.OverPaidBalance - a.OverPaidBalance; }); //sort overPaid descending
 		var transactions = [];
 		
-		debugger;
 		$(attendantsOverPaid).each(function (opIndex, opAtnd){
 			$(attendantsInDebt).each(function (dIndex, debtAtnd){
-				if(debtAtnd.DebtBalance == 0)
+
+				if(debtAtnd.DebtBalance == 0 || opAtnd.OverPaidBalance == 0)
 					return;
 				
 				var curOpAtndBalance = opAtnd.OverPaidBalance;
 				var curDebtAtndBalance = debtAtnd.DebtBalance;
-
-				debugger;
-				if(curOpAtndBalance - curDebtAtndBalance >= 0){
+				
+				if(curOpAtndBalance - curDebtAtndBalance < 0 ){
+					transactions.push({From: debtAtnd.Name, To: opAtnd.Name, Total: curOpAtndBalance});
+					debtAtnd.DebtBalance -= curOpAtndBalance;
+					opAtnd.OverPaidBalance = 0;
+					console.log(`${debtAtnd.Name} ---${curOpAtndBalance}---> ${opAtnd.Name} | ${debtAtnd.Name}'s debt is: ${debtAtnd.DebtBalance} | ${opAtnd.Name}'s balance is 0`);
+					console.log(`-------------------------------------------------------------------------------`);
+				}
+				else {
 					transactions.push({From: debtAtnd.Name, To: opAtnd.Name, Total: curDebtAtndBalance});
 					opAtnd.OverPaidBalance -= debtAtnd.DebtBalance;
 					debtAtnd.DebtBalance = 0;
+					console.log(`${debtAtnd.Name} ---${curDebtAtndBalance}---> ${opAtnd.Name} | ${debtAtnd.Name}'s debt is: 0 | ${opAtnd.Name}'s balance is ${opAtnd.OverPaidBalance}`);
+					console.log(`-------------------------------------------------------------------------------`);
 				}
-				
 			});
 		});
 
-
+		return transactions;
 	}
 	
 	// switch between panels to display the html content
-	function displayCalculation(content){
+	function showResult(summaryContent, tableContent){
 
 		var resultPanel = $('#panel_result'),
 			payersPanel = $('#panel_payers'),
 			buttonContent = `<div style="text-align: center;"><button class="btn btn-primary btn_back">Back</button></div>`;
-
-		resultPanel.show().empty();
+		
+		resultPanel.find('tbody').empty();
+		resultPanel.find('#div_summaryInfo').remove();
+		resultPanel.find('.btn_back').remove();
+		resultPanel.show();
 		payersPanel.hide();
 
-		resultPanel.append(content + buttonContent);
+		resultPanel.append(summaryContent + buttonContent);
+		resultPanel.find('tbody').append(tableContent);
 
 		$('.btn_back').on('click', function(){
 			resultPanel.hide();

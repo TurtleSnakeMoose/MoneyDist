@@ -20,6 +20,7 @@
 	<body>
 	
 		<div class="jumbotron text-center" id="div_header">
+			<label id="versionInfo"> Ver: 1 | verDate: 29082019.2148</label>
 			<h1>WeOweU</h1>
 
 			<p>Based on attending parties and their financial contribution, Calculate money distribution between parties.</p>
@@ -27,9 +28,10 @@
 			<div class="row" style="justify-content: center;">
 				<label for="input_attendNum" class="col-form-label">Number of attendants</label>
 				<div style="padding: 0 1vw">
-					<input class="form-control" type="number" value="2" max="25" min="2" id="input_attendNum" style="width:4vw; text-align: center;">
+					<input class="form-control" type="number" value="8" max="25" min="2" id="input_attendNum" style="width:4vw; text-align: center;">
 				</div>
 				<button class="btn btn-primary btn_start">Start</button>
+				<button class="btn btn-primary btn_test">TestingOnly</button>
 			</div>
 
 		</div>	
@@ -41,8 +43,21 @@
 				</div>
 
 				<div class="col-sm-12 panel" id="panel_result">
+					<div id="div_table" class="col-sm-4 offset-4">
+						<table class="table table-responsive-sm">
+							<thead>
+								<tr>
+								<th>From</th>
+								<th>To</th>
+								<th>Amount</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- to be filled by js-->
+							</tbody>
+						</table>
+					</div>
 				</div>
-
 			</div>
 		</div>
 		
