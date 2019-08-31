@@ -92,8 +92,8 @@ $(function (){
 	function buildSummaryContent(attndCount, sum, precalculatedEachShare){
 		var summarySection = `
 			<div id="div_summaryInfo">
-				<span>Combined sum of <strong>${sum}</strong> was collected by all <strong>${attndCount} attendants</strong>.</span><br>
-				<span>Split evenly between all attendies BEFORE calculated distribution is <strong>${precalculatedEachShare}</strong>.</span>
+				<span>Combined amount of <strong>${sum}</strong> was collected by all <strong>${attndCount} attendants</strong>.</span><br>
+				<span>Split evenly between everyone: <strong>${precalculatedEachShare}</strong>.</span>
 			</div>
 		`;
 		return summarySection;

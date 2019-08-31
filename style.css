@@ -24,11 +24,6 @@
 }
 
 
-
-body{
-	background: #34fe99;
-}
-
 .row{
 	display: inline-block;
 }
@@ -47,15 +42,18 @@ body{
 }
 
 #div_header{
-	background-color: #59d8a2;
+	/* background-color: #59d8a2; */
+	background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
 	margin-bottom: 0;
 	padding: 1rem 2rem;
 	position: relative;
+	border-radius:0;
 }
 
 .panel{
-	background: #34fe99;
+	background-image:linear-gradient(to right bottom, #051937, #004d7a, #008793, #00bf72, #a8eb12);
 	padding: 15px;
+	color:white !important;
 }
 
 #versionInfo{
@@ -68,6 +66,7 @@ body{
 
 table{
 	display: inline-table !important;
+	color:white !important;
 }
 
 .btn{
