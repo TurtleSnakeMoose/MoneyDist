@@ -116,10 +116,12 @@ $(function (){
 		var transactions = generateTransactions(attendantsInDebt, attendantsOverPaid);
 
 		var transactionSection = '';
+		var transactionTextToCopy = '';
 		$(transactions).each(function(i, trns){
+			transactionTextToCopy += `${trns.From} --${trns.Total}--> ${trns.To}\r\n`;
 			transactionSection += `<tr><td>${trns.From}</td><td>${trns.To}</td><td>${trns.Total}</td></tr>`;
-		});
-
+		});	
+		$('#copiableTransaction').val(transactionTextToCopy);
 		return transactionSection;
 		
 	}
@@ -140,14 +142,14 @@ $(function (){
 				var curDebtAtndBalance = debtAtnd.DebtBalance;
 				
 				if(curOpAtndBalance - curDebtAtndBalance < 0 ){
-					transactions.push({From: debtAtnd.Name, To: opAtnd.Name, Total: curOpAtndBalance});
+					transactions.push({From: debtAtnd.Name, To: opAtnd.Name, Total: Math.round(curOpAtndBalance)});
 					debtAtnd.DebtBalance -= curOpAtndBalance;
 					opAtnd.OverPaidBalance = 0;
 					console.log(`${debtAtnd.Name} ---${curOpAtndBalance}---> ${opAtnd.Name} | ${debtAtnd.Name}'s debt is: ${debtAtnd.DebtBalance} | ${opAtnd.Name}'s balance is 0`);
 					console.log(`-------------------------------------------------------------------------------`);
 				}
 				else {
-					transactions.push({From: debtAtnd.Name, To: opAtnd.Name, Total: curDebtAtndBalance});
+					transactions.push({From: debtAtnd.Name, To: opAtnd.Name, Total: Math.round(curDebtAtndBalance)});
 					opAtnd.OverPaidBalance -= debtAtnd.DebtBalance;
 					debtAtnd.DebtBalance = 0;
 					console.log(`${debtAtnd.Name} ---${curDebtAtndBalance}---> ${opAtnd.Name} | ${debtAtnd.Name}'s debt is: 0 | ${opAtnd.Name}'s balance is ${opAtnd.OverPaidBalance}`);
@@ -164,11 +166,15 @@ $(function (){
 
 		var resultPanel = $('#panel_result'),
 			payersPanel = $('#panel_payers'),
-			buttonContent = `<div style="text-align: center;"><button class="btn btn-primary btn_back">Back</button></div>`;
+			buttonContent = `<div style="text-align: center;">
+								<button class="btn btn-primary btn_back">Back</button>
+								<button class="btn btn-primary btn_copyToClipboard">Copy as text</button>
+							</div>`;
 		
 		resultPanel.find('tbody').empty();
 		resultPanel.find('#div_summaryInfo').remove();
 		resultPanel.find('.btn_back').remove();
+		resultPanel.find('.btn_copyToClipboard').remove();
 		resultPanel.show();
 		payersPanel.hide();
 
@@ -178,6 +184,12 @@ $(function (){
 		$('.btn_back').on('click', function(){
 			resultPanel.hide();
 			payersPanel.show();
+		})
+
+		$('.btn_copyToClipboard').on('click', function(){
+			debugger;
+			$('#copiableTransaction').select();
+			document.execCommand("copy");
 		})
 	}
 

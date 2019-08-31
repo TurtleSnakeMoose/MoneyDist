@@ -15,6 +15,7 @@ body{
 	background-color: #59d8a2;
 	margin-bottom: 0;
 	padding: 1rem 2rem;
+	position: relative;
 }
 
 .panel{
@@ -25,5 +26,12 @@ body{
 #versionInfo{
 	font-size: 10px;
 	float:left;
+	position:absolute;
+	top:0;
+	left: 0;
+}
+
+.btn{
+	margin: 0 5px;
 }
 
