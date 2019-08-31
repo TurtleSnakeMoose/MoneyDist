@@ -3,6 +3,7 @@
 <html lang="en">
 	<head>
 	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	  <title>WeOweU</title>
 	  <meta name="description" content="Calculate money distribution between parties">
@@ -21,32 +22,30 @@
 	
 		<div class="jumbotron text-center" id="div_header">
 			<label id="versionInfo"> Ver: 1 | verDate: 3108219.1550</label>
-			<h1>WeOweU</h1>
+			<div class="row col-12" style="justify-content: center;">
+				<h1>WeOweU</h1>
 
-			<p>Based on attending parties and their financial contribution, Calculate money distribution between parties.</p>
+				<p>Calculate funds distribution, so that all parties break even.</p>
 
-			<div class="row" style="justify-content: center;">
-				<label for="input_attendNum" class="col-form-label">Number of attendants</label>
-				<div style="padding: 0 1vw">
-					<input class="form-control" type="number" value="8" max="25" min="2" id="input_attendNum" style="width:4vw; text-align: center;">
+				<div class="col-12">
+					<input class="form-control" type="number" placeholder="# of attendants" max="25" min="2" value="8" id="input_attendNum" style="text-align: center;">
 				</div>
 				<button class="btn btn-primary btn_start">Start</button>
-				<button class="btn btn-primary btn_test">TestingOnly</button>
+				<button class="btn btn-primary btn_test">Test</button>
 			</div>
-
 		</div>	
 
-		<div class="container" id="mainContainer">
+		<div class="container" id="mainContainer" style="text-align: center;">
 			<div class="row">
 
-				<div class="col-sm-12 panel" id="panel_payers">
+				<div class="col-12 panel" id="panel_payers">
 				</div>
 
-				<div class="col-sm-12 panel" id="panel_result">
+				<div class="col-12 panel" id="panel_result">
 
 					<textarea id="copiableTransaction" style="position: absolute; left: -1000px; top: -1000px;" value="" rows="9"></textarea> 
 					
-					<div id="div_table" class="col-sm-4 offset-4">
+					<div id="div_table">
 						<table class="table table-responsive-sm">
 							<thead>
 								<tr>

@@ -36,16 +36,16 @@ $(function (){
 			payersDiv.append(`
 			<div class="form-group row attendantRow">
 				
-				<label class="col-1 col-form-label">${i+1}. </label>
+				<label class="col-1">${i+1}. </label>
 
 				<div class="col-5">
 					<input class="form-control attendantName" type="text" placeholder="Attendant#${i+1}" id="attndName${i+1}" data-attendantNum="${i+1}">
 				</div>
 
-				<label class="col-1 col-form-label">Paid </label>
+				<label class="col-2">Paid </label>
 
-				<div class="col-1" style="padding: 0 1vw">
-					<input class="form-control attendantPaid" type="number" placeholder="0" id="attndPayment_${i+1}" style="width:5vw; data-attendantNum="${i+1}"">
+				<div class="col-4">
+					<input class="form-control attendantPaid" type="number" placeholder="0" id="attndPayment_${i+1}" data-attendantNum="${i+1}"">
 				</div>
 
 			</div>	
@@ -118,7 +118,7 @@ $(function (){
 		var transactionSection = '';
 		var transactionTextToCopy = '';
 		$(transactions).each(function(i, trns){
-			transactionTextToCopy += `${trns.From} --${trns.Total}--> ${trns.To}\r\n`;
+			transactionTextToCopy += `*${trns.From}* --${trns.Total}--> *${trns.To}*\r\n`;
 			transactionSection += `<tr><td>${trns.From}</td><td>${trns.To}</td><td>${trns.Total}</td></tr>`;
 		});	
 		$('#copiableTransaction').val(transactionTextToCopy);
@@ -187,7 +187,6 @@ $(function (){
 		})
 
 		$('.btn_copyToClipboard').on('click', function(){
-			debugger;
 			$('#copiableTransaction').select();
 			document.execCommand("copy");
 		})
