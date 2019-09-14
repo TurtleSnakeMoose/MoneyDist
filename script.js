@@ -47,20 +47,48 @@ $(function (){
 				<div class="col-4">
 					<input class="form-control attendantPaid" type="number" placeholder="0" id="attndPayment_${i+1}" data-attendantNum="${i+1}"">
 				</div>
-
+					
 			</div>	
 			`);	
-		}
-
-		$(payersDiv).append(`
+				}
+				
+				$(payersDiv).append(`
 			<div style="text-align: center;">
-				<button class="btn btn-primary btn_calculate">Calculate</button>
+				<button class="btn btn-primary btn_addSidePot" disabled >Add side pot</button>
+				<button class="btn btn-primary btn_calculate" disabled >Calculate</button>
 			</div>
 		`);
 
 		// calculate button: calculate for every memeber of the party, how much money he should transfer to who
 		$('.btn_calculate').on('click', function(e) {
 			calcPayments();
+		});
+
+		// calculate button: calculate for every memeber of the party, how much money he should transfer to who
+		$('.btn_addSidePot').on('click', function(e) {
+			alert('add side pot');
+		});
+
+		// check for name validity and availability. add number to already existing name and enable buttons
+		$('.attendantName').on('blur', function () {
+			var allNames = [],
+				buttons = $('.btn_addSidePot, .btn_calculate'),
+				isValid = true;
+
+			// check for duplicated names - clear if duplicate. push name into list for future validation
+			$('.attendantName').each(function (i,el) {
+				el.value = allNames.includes(el.value) ? '' : el.value;
+				allNames.push(el.value);			
+			});
+			
+			// check if form is valid - no empty or white spaces 
+			$(allNames).each( function (i,el){
+				if(this.trim().length === 0) { isValid =  false; }
+			});
+			
+			// enable\disable buttons
+			buttons.removeAttr('disabled').attr('disabled' , isValid ? false : true);
+				
 		});
 	}
 
