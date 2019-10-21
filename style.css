@@ -31,7 +31,17 @@
 .attendantRow{
 	display: flex ;
 }
+
 .attendantRow label{
+	align-self:center;
+	margin-bottom: 0;
+}
+
+.sidepotRow{
+	display: flex;
+}
+
+.sidepotRow label{
 	align-self:center;
 	margin-bottom: 0;
 }
