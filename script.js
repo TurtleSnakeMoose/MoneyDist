@@ -18,6 +18,10 @@ $(function (){
 		for(i = 0 ; i < atndRows.length ; i++){
 			$(atndRows[i]).find('.attendantName').val(hardCodedData[i].Name);
 			$(atndRows[i]).find('.attendantPaid').val(hardCodedData[i].Paid);
+			
+			if(i == atndRows.length - 1){
+				$(atndRows[i]).find('.attendantName').trigger('blur');
+			}
 		}
 	});
 	
@@ -64,10 +68,53 @@ $(function (){
 			calcPayments();
 		});
 
-		// calculate button: calculate for every memeber of the party, how much money he should transfer to who
+		// add side pot button: add side pot when someone pays for something that is'nt shared with the entire group.
 		$('.btn_addSidePot').on('click', function(e) {
-			alert('add side pot');
+
+			var payersPanel = $('#panel_payers'),
+			attndNames = [];
+
+			payersPanel.find('.attendantRow').each(function (i, el){
+				var attendant = $(el),
+					atndName = attendant.find('.attendantName').val();
+
+				attndNames.push(atndName);
+			});
+
+			$('#panel_payers').append(constructMultiSelectElement(attndNames));
+			$('#boot-multiselect-demo').multiselect({});
 		});
+
+		function constructMultiSelectElement(allNames){
+			var msElement = '';
+			for(i = 0 ; i < allNames.length ; i++){
+				if(i == 0) {
+					msElement += '<select id="boot-multiselect-demo" multiple="multiple">';
+				}
+				
+				msElement += '<option value="'+ allNames[i] +'">'+ allNames[i] +'</option>';
+
+				if(i == allNames.length-1) {
+					msElement += '</select>';
+				}
+			}
+
+			return msElement;
+
+			// return `
+			// <select id="boot-multiselect-demo" multiple="multiple">
+			// 	<option value="jQuery">jQuery Tutorials</option>
+			// 	<option value="Bootstrap">Bootstrap Framework</option>
+			// 	<option value="HTML">HTML</option>
+			// 	<option value="CSS" >CSS</option>
+			// 	<option value="Angular">Angular</option>
+			// 	<option value="Java">Java</option>
+			// 	<option value="Python">Python</option>
+			// 	<option value="MySQL">MySQL</option>
+			// 	<option value="Oracle">Oracle</option>
+			// </select>
+			// `;
+		}
 
 		// check for name validity and availability. add number to already existing name and enable buttons
 		$('.attendantName').on('blur', function () {
