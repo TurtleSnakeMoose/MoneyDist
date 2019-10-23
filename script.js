@@ -3,17 +3,16 @@ $(function (){
 	var _sidePotCount = 0;
 	
 	// TESTING ONLY - REMOVE WHEN WORKING
-	$('#versionInfo').on('click', function(e) {
+	$('.btn_test').on('click', function(e) {
 		var hardCodedData = [
 			{Name: 'Jinji', Paid:593},
 			{Name: 'Mini', Paid:345},
 			{Name: 'Igor', Paid:400},
 			{Name: 'Yan', Paid:0},
-			{Name: 'Bomj', Paid:0},
 			{Name: 'Slava', Paid:123},
 			{Name: 'Eli', Paid:50},
 			{Name: 'Vova', Paid:50},
-			{Name: 'Oleg', Paid:23}
+			{Name: 'Bomj', Paid:0}
 			],
 			atndRows = $('.attendantRow');
 
@@ -26,6 +25,7 @@ $(function (){
 			}
 		}
 	});
+
 	
 	// start button : correct number if num > 25 OR num < 2. display attendant names and payment inputs.
 	$('.btn_start').on('click', function(e) {
