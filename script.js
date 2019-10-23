@@ -1,31 +1,25 @@
 $(function (){
-
-	var _sidePotCount = 0;
 	
 	// TESTING ONLY - REMOVE WHEN WORKING
-	$('.btn_test').on('click', function(e) {
+	$('#versionInfo').on('click', function(e) {
 		var hardCodedData = [
 			{Name: 'Jinji', Paid:593},
 			{Name: 'Mini', Paid:345},
 			{Name: 'Igor', Paid:400},
 			{Name: 'Yan', Paid:0},
+			{Name: 'Bomj', Paid:0},
 			{Name: 'Slava', Paid:123},
 			{Name: 'Eli', Paid:50},
 			{Name: 'Vova', Paid:50},
-			{Name: 'Bomj', Paid:0}
+			{Name: 'Oleg', Paid:23}
 			],
 			atndRows = $('.attendantRow');
 
 		for(i = 0 ; i < atndRows.length ; i++){
 			$(atndRows[i]).find('.attendantName').val(hardCodedData[i].Name);
 			$(atndRows[i]).find('.attendantPaid').val(hardCodedData[i].Paid);
-			
-			if(i == atndRows.length - 1){
-				$(atndRows[i]).find('.attendantName').trigger('blur');
-			}
 		}
 	});
-
 	
 	// start button : correct number if num > 25 OR num < 2. display attendant names and payment inputs.
 	$('.btn_start').on('click', function(e) {
@@ -59,7 +53,7 @@ $(function (){
 				}
 				
 				$(payersDiv).append(`
-			<div class="buttonsDiv" style="text-align: center;">
+			<div style="text-align: center;">
 				<button class="btn btn-primary btn_addSidePot" disabled >Add side pot</button>
 				<button class="btn btn-primary btn_calculate" disabled >Calculate</button>
 			</div>
@@ -70,85 +64,10 @@ $(function (){
 			calcPayments();
 		});
 
-		// add side pot button: add side pot when someone pays for something that is'nt shared with the entire group.
+		// calculate button: calculate for every memeber of the party, how much money he should transfer to who
 		$('.btn_addSidePot').on('click', function(e) {
-
-			var payersPanel = $('#panel_payers'),
-				buttonsDiv = payersPanel.find('.buttonsDiv').detach();
-				attndNames = [];
-
-			payersPanel.find('.attendantRow').each(function (i, el){
-				var attendant = $(el),
-					atndName = attendant.find('.attendantName').val();
-
-				attndNames.push(atndName);
-			});
-
-			$('#panel_payers').append(`
-				<div class="sidepotRow row" id="sidepot_`+ ++_sidePotCount +`"></div>
-			`);
-
-			var thisSidepot = payersPanel.find('#sidepot_'+_sidePotCount+'');
-
-			$(thisSidepot).append('<label class="col-1">></label>')
-			 $(thisSidepot).append(cunstructDropdownElement(attndNames)); // append sidepot payer dropdown selection
-			 $(thisSidepot).append(`
-			 	<label class="col-1">Paid </label>
-
-			 <div class="col-2">
-			 	<input class="form-control sidepotPaid" type="number" placeholder="0" id="sidepot_`+_sidePotCount+`_amountPaid">
-			 </div>
-
-			 <label class="col-2">For </label>
-			 `);
-			 $(thisSidepot).append(constructMultiSelectElement(attndNames)); // append sidepot participents multiselection
-			 $(thisSidepot).find('.sidePot_participant_multiselect').multiselect({}); // init multiselection
-			 $(payersPanel).append(buttonsDiv);
-
+			alert('add side pot');
 		});
-
-		function constructMultiSelectElement(allNames){
-			var msElement = '';
-			for(i = 0 ; i < allNames.length ; i++){
-				if(i == 0) {
-					msElement += '<div class="col-3"><select id="boot-multiselect-demo" class="sidePot_participant_multiselect" multiple="multiple">';
-				}
-				
-				msElement += '<option value="'+ allNames[i] +'">'+ allNames[i] +'</option>';
-
-				if(i == allNames.length-1) {
-					msElement += '</select></div>';
-				}
-			}
-
-			return msElement;
-		}
-
-		function cunstructDropdownElement(allNames){
-			var ddElement = '';
-			for(i = 0 ; i < allNames.length ; i++){
-				if(i == 0) {
-					ddElement += `
-					<div class="col-3 btn-group dropup">
-						<button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						WhoPaid
-						</button>
-					<div class="dropdown-menu">
-					`;
-				}
-				
-				ddElement += '<a class="dropdown-item" href="#">'+ allNames[i] +'</a>';
-
-				if(i == allNames.length-1) {
-					ddElement += `
-						</div>
-					</div>
-					`;
-				}
-			}
-
-			return ddElement;
-		}
 
 		// check for name validity and availability. add number to already existing name and enable buttons
 		$('.attendantName').on('blur', function () {
