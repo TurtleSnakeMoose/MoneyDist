@@ -38,7 +38,8 @@
 }
 
 .sidepotRow{
-	display: flex;
+	border-top: 2px solid white;
+	padding: 0 15px;
 }
 
 .sidepotRow label{
@@ -79,8 +80,9 @@ table{
 }
 
 .btn{
-	margin: 10px 5px;
+	margin: 10px 0;
 }
+
 
 
 

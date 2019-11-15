@@ -72,83 +72,9 @@ $(function (){
 
 		// add side pot button: add side pot when someone pays for something that is'nt shared with the entire group.
 		$('.btn_addSidePot').on('click', function(e) {
-
-			var payersPanel = $('#panel_payers'),
-				buttonsDiv = payersPanel.find('.buttonsDiv').detach();
-				attndNames = [];
-
-			payersPanel.find('.attendantRow').each(function (i, el){
-				var attendant = $(el),
-					atndName = attendant.find('.attendantName').val();
-
-				attndNames.push(atndName);
-			});
-
-			$('#panel_payers').append(`
-				<div class="sidepotRow row" id="sidepot_`+ ++_sidePotCount +`"></div>
-			`);
-
-			var thisSidepot = payersPanel.find('#sidepot_'+_sidePotCount+'');
-
-			$(thisSidepot).append('<label class="col-1">></label>')
-			 $(thisSidepot).append(cunstructDropdownElement(attndNames)); // append sidepot payer dropdown selection
-			 $(thisSidepot).append(`
-			 	<label class="col-1">Paid </label>
-
-			 <div class="col-2">
-			 	<input class="form-control sidepotPaid" type="number" placeholder="0" id="sidepot_`+_sidePotCount+`_amountPaid">
-			 </div>
-
-			 <label class="col-2">For </label>
-			 `);
-			 $(thisSidepot).append(constructMultiSelectElement(attndNames)); // append sidepot participents multiselection
-			 $(thisSidepot).find('.sidePot_participant_multiselect').multiselect({}); // init multiselection
-			 $(payersPanel).append(buttonsDiv);
-
+			addSidePotRow();
 		});
 
-		function constructMultiSelectElement(allNames){
-			var msElement = '';
-			for(i = 0 ; i < allNames.length ; i++){
-				if(i == 0) {
-					msElement += '<div class="col-3"><select id="boot-multiselect-demo" class="sidePot_participant_multiselect" multiple="multiple">';
-				}
-				
-				msElement += '<option value="'+ allNames[i] +'">'+ allNames[i] +'</option>';
-
-				if(i == allNames.length-1) {
-					msElement += '</select></div>';
-				}
-			}
-
-			return msElement;
-		}
-
-		function cunstructDropdownElement(allNames){
-			var ddElement = '';
-			for(i = 0 ; i < allNames.length ; i++){
-				if(i == 0) {
-					ddElement += `
-					<div class="col-3 btn-group dropup">
-						<button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						WhoPaid
-						</button>
-					<div class="dropdown-menu">
-					`;
-				}
-				
-				ddElement += '<a class="dropdown-item" href="#">'+ allNames[i] +'</a>';
-
-				if(i == allNames.length-1) {
-					ddElement += `
-						</div>
-					</div>
-					`;
-				}
-			}
-
-			return ddElement;
-		}
 
 		// check for name validity and availability. add number to already existing name and enable buttons
 		$('.attendantName').on('blur', function () {
@@ -301,4 +227,93 @@ $(function (){
 		})
 	}
 
+	function addSidePotRow() {
+		var payersPanel = $('#panel_payers'),
+			buttonsDiv = payersPanel.find('.buttonsDiv').detach();
+			attndNames = [];
+
+		payersPanel.find('.attendantRow').each(function (i, el){
+			var attendant = $(el),
+				atndName = attendant.find('.attendantName').val();
+
+			attndNames.push(atndName);
+		});
+
+		$('#panel_payers').append(`
+						<div class="sidepotRow row" id="sidepot_`+ ++_sidePotCount +`">
+							<div class="sidepot_whoPaid row" style="display:flex;"></div>
+							<div class="sidepot_forWho row" style="display:flex;"></div>
+						</div>`
+		);
+
+		var thisSidepot = payersPanel.find('#sidepot_'+_sidePotCount+'');
+		var thisSidepotWhoPaidRow = $(thisSidepot).find('.sidepot_whoPaid');
+		var thisSidepotForWho = $(thisSidepot).find('.sidepot_forWho');
+
+		$(thisSidepotWhoPaidRow).append(`<label class="col-1">></label>`);
+		$(thisSidepotWhoPaidRow).append(cunstructDropdownElement(attndNames)); // append sidepot payer dropdown selection
+		$(thisSidepotWhoPaidRow).append(`
+				<label class="col-2">Paid </label>
+
+				<div class="col-4">
+					<input class="form-control sidepotPaid" type="number" style="margin-top: 9px;" placeholder="0" id="sidepot_`+_sidePotCount+`_amountPaid">
+				</div>
+		`);
+		$(thisSidepotForWho).append(constructMultiSelectElement(attndNames)); // append sidepot participents multiselection
+		$(thisSidepotForWho).find('.sidePot_participant_multiselect').multiselect({}); // init multiselection
+		$(payersPanel).append(buttonsDiv);
+
+		$('.dropdown-item').on('click', function(){
+			displayDropDownSelection($(this));
+		});
+	}
+
+	function constructMultiSelectElement(allNames){
+		var msElement = `
+						<label class="col-1"> </label>
+						<label class="col-2">For </label>
+					`;
+
+		for(i = 0 ; i < allNames.length ; i++){
+			if(i == 0) {
+				msElement += '<div class="col-9"><select id="boot-multiselect-demo" class="sidePot_participant_multiselect" multiple="multiple">';
+			}
+			
+			msElement += '<option value="'+ allNames[i] +'">'+ allNames[i] +'</option>';
+
+			if(i == allNames.length-1) {
+				msElement += '</select></div>';
+			}
+		}
+
+		return msElement;
+	}
+
+	function cunstructDropdownElement(allNames){
+		var ddElement = '';
+		for(i = 0 ; i < allNames.length ; i++){
+			if(i == 0) {
+				ddElement += `
+				<div class="col-5 btn-group dropup">
+					<button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> WhoPaid </button>
+				<div class="dropdown-menu">
+				`;
+			}
+			
+			ddElement += '<a class="dropdown-item" href="#">'+ allNames[i] +'</a>';
+
+			if(i == allNames.length-1) {
+				ddElement += `
+					</div>
+				</div>
+				`;
+			}
+		}
+
+		return ddElement;
+	}
+
+	function displayDropDownSelection(item){
+		$(item).parents('.sidepot_whoPaid').find('button').text(item.text());
+	}
 })
