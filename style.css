@@ -31,7 +31,18 @@
 .attendantRow{
 	display: flex ;
 }
+
 .attendantRow label{
+	align-self:center;
+	margin-bottom: 0;
+}
+
+.sidepotRow{
+	border-top: 2px solid white;
+	padding: 0 15px;
+}
+
+.sidepotRow label{
 	align-self:center;
 	margin-bottom: 0;
 }
@@ -69,8 +80,15 @@ table{
 }
 
 .btn{
-	margin: 10px 5px;
+	margin: 10px 0;
 }
+
+.removeSidePot{
+	font-size:20px;
+	color:white;
+	margin-top: 5%;
+}
+
 
 
 
