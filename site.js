@@ -5,10 +5,7 @@ $(function (){
 
 	var _sidePotCount = 0;
 	
-	// TESTING ONLY - REMOVE WHEN WORKING
-	$('#versionInfo').on('click', function(e) {
-		wou.util.loadHardCodedData();
-	});
+	$('#versionInfo').on('click', function(e) { wou.util.loadHardCodedData(); });
 	
 	// start button : correct number if num > 25 OR num < 2. display attendant names and payment inputs.
 	$('.btn_start').on('click', function(e) {
@@ -28,41 +25,17 @@ $(function (){
 		$(payersDiv).append(wou.view.appendButtonsDiv());
 
 		// calculate button: calculate for every memeber of the party, how much money he should transfer to who
-		$('.btn_calculate').on('click', function(e) {
-			calcPayments();
-		});
+		$('.btn_calculate').on('click', function(e) { calcPayments(); });
 
 		// add side pot button: add side pot when someone pays for something that is'nt shared with the entire group.
-		$('.btn_addSidePot').on('click', function(e) {
-			addSidePotRow();
-		});
-
+		$('.btn_addSidePot').on('click', function(e) { addSidePotRow(); });
 
 		// check for name validity and availability. add number to already existing name and enable buttons
-		$('.attendantName').on('blur', function () {
-			var allNames = [],
-				buttons = $('.btn_addSidePot, .btn_calculate'),
-				isValid = true;
-
-			// check for duplicated names - clear if duplicate. push name into list for future validation
-			$('.attendantName').each(function (i,el) {
-				el.value = allNames.includes(el.value) ? '' : el.value;
-				allNames.push(el.value);			
-			});
-			
-			// check if form is valid - no empty or white spaces 
-			$(allNames).each( function (i,el){
-				if(this.trim().length === 0) { isValid =  false; }
-			});
-			
-			// enable\disable buttons
-			buttons.removeAttr('disabled').attr('disabled' , isValid ? false : true);
-				
-		});
+		$('.attendantName').on('blur', function () { wou.util.validate_inputs(); });
 	}
 
 	// calculate the funds transaction
-	function calcPayments (){
+	function calcPayments () {
 		var payersPanel = $('#panel_payers'),
 			attndCount = parseInt($('#input_attendNum').val()),
 			attndData = [],
@@ -131,13 +104,19 @@ $(function (){
 		thisSidepot.find('.sidePot_participant_multiselect').multiselect({}); // init multiselection
 
 		$(payersPanel).append(buttonsDiv);
+		buttonsDiv.find('button').attr('disabled', true); // disable buttons until validated
+		$('.attendantName').attr('disabled', true) // disable name input once siderows are present
 
-		// display selected name on DropDown
+		// display selected name on DropDown and validate sidepots
 		$('.dropdown-item').on('click', function(){
-			debugger;
-			$(this).parents('.sidepot_whoPaid').find('button').text(this.text);
+			$(this).parents('.sidepot_whoPaid').find('button').text(this.text).addClass('valid');
+			wou.util.validate_sidePotRows();
 		});
+		
+		// validate sidepots
+		$('.multiselect-container input[type="checkbox"]').on('change', function () { wou.util.validate_sidePotRows(); });
 
-		$('.removeSidePot').off('click').on('click', function (){ $(this).closest('.sidepotRow').remove() });
+		// remove sidepot row - enable\disabled buttons and name inputs if no more sidepots left
+		$('.removeSidePot').off('click').on('click', function () { --_sidePotCount;  wou.util.removeSidePotRow(this); });
 	}
 })
