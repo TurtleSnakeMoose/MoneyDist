@@ -78,3 +78,11 @@ wou.view.getEmptySidePotRow = function (sidePotRowCount, allNames){
             </div>`;
 }
 
+wou.view.generateTableContentForTransactions = function (transactions) {
+    tblContent = '';
+    $.each(transactions, function(index, t){
+        tblContent += `<tr><td>${t.From}</td><td>${t.To}</td><td>${t.Total}</td></tr>`;
+    });
+    return tblContent;
+}
+

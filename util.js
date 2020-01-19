@@ -8,8 +8,8 @@ wou.util.loadHardCodedData = function (){
         {Name: 'Jinji', Paid:593},
         {Name: 'Mini', Paid:345},
         {Name: 'Igor', Paid:400},
-        {Name: 'Yan', Paid:0},
         {Name: 'Bomj', Paid:0},
+        {Name: 'Yan', Paid:0},
         {Name: 'Slava', Paid:123},
         {Name: 'Eli', Paid:50},
         {Name: 'Vova', Paid:50},
@@ -76,3 +76,18 @@ wou.util.removeSidePotRow = function (icon) {
     $(btns).attr('disabled', sidepots_count === 0 ? false : true);
 
 }
+
+wou.util.buildCopiableTransactionText = function (tranactions) {
+    var str_result = '',
+        currentPayer = '';
+    $.each(tranactions, function (index, t){
+        if(t.From !== currentPayer){
+            currentPayer = t.From
+            str_result += '--------------------------------- \r\n';
+            str_result += `*${currentPayer}*: \r\n`;
+        }
+        str_result += `\t${t.Total}  -->  *${t.To}*  \r\n`;
+    });
+    str_result += '---------------------------------';
+    return str_result;
+};
