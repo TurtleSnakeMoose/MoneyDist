@@ -70,6 +70,25 @@
 	border-radius:0;
 }
 
+.lbl_we{
+	vertical-align: top;
+    font-weight: 500;
+    font-size: 37px;
+    color: white;
+}
+
+.lbl_o{
+	font-size: 51px;
+    font-weight: 700;
+}
+
+.lbl_u{
+    vertical-align: baseline;
+    font-weight: 500;
+    font-size: 37px;
+    color: white;
+}
+
 .panel{
 	background-image:linear-gradient(to right bottom, #051937, #004d7a, #008793, #00bf72, #a8eb12);
 	color:white !important;
