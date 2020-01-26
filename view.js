@@ -13,8 +13,8 @@ wou.view.appendButtonsDiv = function(){
 wou.view.btnDiv_backAndCopy = function(){
     return `<div style="text-align: center;">
                 <button class="btn btn-primary btn_back">Back</button>
-                <button class="btn btn-primary btn_copyToClipboard">Copy as text</button>
-                <a href="whatsapp://send?text=test" data-action="share/whatsapp/share">Share via Whatsapp</a>
+                <button class="btn btn-primary btn_copyToClipboard">CopyText</button>
+                <button href="whatsapp://send?text=" data-action="share/whatsapp/share" class="btn btn-primary btn_shareViaWhatsApp">Share via whatsApp</button>
             </div>`;
 }
 
