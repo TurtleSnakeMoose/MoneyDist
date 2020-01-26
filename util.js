@@ -77,6 +77,8 @@ wou.util.removeSidePotRow = function (icon) {
 
 }
 
+wou.util.transactionsAsText = '';
+
 wou.util.buildCopiableTransactionText = function (tranactions) {
     var str_result = '',
         currentPayer = '';
@@ -89,5 +91,7 @@ wou.util.buildCopiableTransactionText = function (tranactions) {
         str_result += `\t${t.Total}  -->  *${t.To}*  \r\n`;
     });
     str_result += '---------------------------------';
+
+    wou.util.transactionsAsText = window.encodeURIComponent(str_result);
     return str_result;
 };

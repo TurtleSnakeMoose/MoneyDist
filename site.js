@@ -75,7 +75,7 @@ $(function (){
 		resultPanel.append(summaryContent + buttonContent);
 		resultPanel.find('tbody').append(tableContent);
 
-		$('.btn_shareViaWhatsApp').attr('href', $('.btn_shareViaWhatsApp').attr('href') + $('#copiableTransaction').val());
+		$('.btn_shareViaWhatsApp').attr('href', `whatsapp://send?text=${wou.util.transactionsAsText}`);
 		
 		$('.btn_back').on('click', function(){
 			resultPanel.hide();
