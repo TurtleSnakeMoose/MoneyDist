@@ -14,7 +14,7 @@ wou.view.btnDiv_backAndCopy = function(){
     return `<div style="text-align: center;">
                 <button class="btn btn-primary btn_back">Back</button>
                 <button class="btn btn-primary btn_copyToClipboard">CopyText</button>
-                <button href="whatsapp://send?text=" data-action="share/whatsapp/share" class="btn btn-primary btn_shareViaWhatsApp">Share via whatsApp</button>
+                <a href="whatsapp://send?text=" data-action="share/whatsapp/share" class="btn btn-primary btn_shareViaWhatsApp">Share via whatsApp</a>
             </div>`;
 }
 
