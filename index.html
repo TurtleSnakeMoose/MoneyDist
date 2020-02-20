@@ -12,15 +12,15 @@
 	  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" integrity="sha256-7stu7f6AB+1rx5IqD8I+XuIcK4gSnpeGeSjqsODU+Rk=" crossorigin="anonymous" />
 	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	  <link href="style.css" rel="stylesheet">
+	  <link href="style/style.css" rel="stylesheet">
 	  
 	  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 	  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js" integrity="sha256-qoj3D1oB1r2TAdqKTYuWObh01rIVC1Gmw9vWp1+q5xw=" crossorigin="anonymous"></script>
-	  <script src="view.js"></script>
-	  <script src="calc.js"></script>
-	  <script src="util.js"></script>
-	  <script src="site.js"></script>
+	  <script src="script/view.js"></script>
+	  <script src="script/calc.js"></script>
+	  <script src="script/util.js"></script>
+	  <script src="script/site.js"></script>
 	</head>
 
 	<body>
@@ -28,13 +28,13 @@
 		<div class="jumbotron text-center" id="div_header">
 			<label id="versionInfo"> Ver: 2.1 | verDate: 26012020.1840</label> <!--version number and insert hardCoded names-->
 			<div class="row col-12" style="justify-content: center;">
-				<div style='font-family: monospace;'>
+				<div class="div_logo" style='font-family: monospace;'>
 					<label class='lbl_we'>we</label>
-					<label class='lbl_o'>O</label>
+					<img class="svg_dollar"  src="assets/img/dollarSign.svg">
 					<label class='lbl_u'>u.</label class='lbl_we'>
 				</div>
 
-				<p>Calculate funds distribution, so that all parties break even.</p>
+				<p>Number of people in the group:</p>
 
 				<div class="col-12">
 					<input class="form-control" type="number" placeholder="# of attendants" max="25" min="2" value="7" id="input_attendNum" style="text-align: center;">
