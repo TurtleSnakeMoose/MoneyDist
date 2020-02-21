@@ -33,6 +33,12 @@
 	}
 }
 
+@keyframes rotate {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 html{
 	background-color: #cef6eb;
 }
@@ -106,7 +112,7 @@ input{
     font-weight: 500;
     font-size: 37px;
 	color: white;
-	
+	z-index: 1;
 	position: absolute;
     top: -7px;
     left: 68px;
@@ -121,7 +127,7 @@ input{
 	
 	position: absolute;
     bottom: 0;
-    right: 66px;
+    right: 60px;
 }
 
 .panel{
@@ -156,9 +162,24 @@ table{
 	margin-top: 5%;
 }
 
+.div_svg{
+	position: relative;
+	height: 103px;
+}
+
 .svg_dollar {
-	height: 8em;
+	position: absolute;
+	height: 3.5em;
+	top: 28px;
+    right: 106px;
 	animation: spin 3s infinite linear;
+}
+
+.svg_circle {
+	position: absolute;
+	height: 8em;
+	right: 77px;
+	animation: rotate 3s linear infinite;
 }
 
 
