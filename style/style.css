@@ -182,5 +182,39 @@ table{
 	animation: rotate 3s linear infinite;
 }
 
+.multiselect-container{
+	padding: 10px 0;
+	box-shadow: 0px 20px 20px 0px #8d8c8c;
+	background: rgb(119, 241, 189);
+}
+
+.multiselect-container>li {
+	padding: 5px;
+}
+
+.multiselect-container>li input[type="checkbox"] {
+	height: 20px;
+	width: 20px;
+}
+
+.multiselect-container>li label.checkbox {
+	font-size: 1.1em;
+    font-weight: 500;
+}
+
+.dropdown-menu{
+	padding: 10px 0;
+    box-shadow: 0px 20px 20px 0px #8d8c8c;
+    background: rgb(119, 241, 189);	
+}
+
+.dropdown-menu > a{
+	font-size: 1.1em;
+    font-weight: 500;
+    color: #007bff;
+}
+
+
+
 
 
