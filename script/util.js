@@ -15,7 +15,7 @@ wou.util.loadHardCodedData = function (){
         {Name: 'Vova', Paid:50},
         {Name: 'Fishking', Paid:50},
         {Name: 'Roi', Paid:50},
-        {Name: 'Vova', Paid:50},
+        {Name: 'Blecher', Paid:50},
         {Name: 'Yafimchik', Paid:23}
         ],
     atndRows = $('.attendantRow');
